@@ -8,7 +8,10 @@ from django.urls import reverse_lazy
 
 class TasksListView(ListView):
     model = Task
-    template_name = 'tasks_list.html'
+    template_name = 'tasks/tasks_list.html'
+
+    def get_queryset(self):
+        return Task.objects.filter(user=self.request.user)
 
 
 class TaskCreateView(CreateView):
