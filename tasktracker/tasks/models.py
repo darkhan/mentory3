@@ -7,6 +7,12 @@ User = settings.AUTH_USER_MODEL
 class Task(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    created_time = models.DateTimeField()
+    created_time = models.DateTimeField(auto_now_add=True)
     due_time = models.DateTimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['-created_time']

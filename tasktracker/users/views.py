@@ -56,6 +56,7 @@ def custom_register(request):
             user.save()
             messages.success(request, 'You have singed up successfully.')
             login(request, user)
+            # todo: after redirect go to account page and fill fullname
             return HttpResponseRedirect('/tasks/')
         else:
             return render(request, 'users/register.html', {'form': form})

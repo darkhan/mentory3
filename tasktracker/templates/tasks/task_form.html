@@ -2,7 +2,7 @@
 
 {% block content %}
 <h2>Create/Update Task</h2>
-<form method="post" action="">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Save">
