@@ -17,11 +17,11 @@ class TasksListView(ListView):
 class TaskCreateView(CreateView):
     model = Task
     template_name = 'task_form.html'
-    fields = ['name', 'description', 'start_time', 'end_time', 'user']
+    fields = ['name', 'description', 'start_time', 'due_time', 'user']
 
 
 class TaskUpdateView(UpdateView):
     model = Task
     template_name = 'task_form.html'
-    fields = ['name', 'description', 'start_time', 'end_time', 'user']
+    fields = ['name', 'description', 'created_time', 'due_time', 'user']
     success_url = reverse_lazy('project-list')
