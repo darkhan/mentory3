@@ -17,7 +17,8 @@
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Save">
+    <input class="btn btn-primary" type="submit" value="Save" />
+    <a href="{%url 'task_list' %}" class="btn btn-outline">Cancel</a>
 </form>
 
 {% endblock content %}

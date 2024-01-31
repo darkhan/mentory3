@@ -17,14 +17,14 @@
 
 <p>&nbsp;</p>
 
-{% if object_list %}
+{% if tasks %}
 <ul class="list-group" style="width:50%">
-    {% for task in object_list %}
+    {% for task in tasks %}
     <li class="list-group-item">
         <div class="container">
             <div class="row">
                 <div class="col-12 col-sm-8">
-                    <h3>{{ task.name }}</h3>
+                    <h3><a href="{% url 'task' task.id %}" class="hi {% if task.completed %}text-decoration-line-through{% else %}pending{% endif %}">{{ task.name }}</a></h3>
                     <p>{{ task.description }} </p>
                 </div>
                 <div class="col-12 col-sm-2">

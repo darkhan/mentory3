@@ -10,6 +10,7 @@ class Task(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     due_time = models.DateTimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    completed = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
