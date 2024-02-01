@@ -5,7 +5,8 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from .models import Task
-from .forms import TaskForm
+from .forms import TaskForm, TaskSearchForm
+from django.contrib.postgres.search import SearchVector
 
 
 class TaskDetail(LoginRequiredMixin, DetailView):
@@ -22,7 +23,18 @@ class TasksListView(LoginRequiredMixin, ListView):
     context_object_name = 'tasks'
 
     def get_queryset(self):
+        query = self.request.GET.get("q")
+        if query:
+            query_completed = self.request.GET.get("completed")
+            if query_completed:
+                return Task.objects.annotate(search=SearchVector("name", "description")).filter(user=self.request.user, search=query, completed=query_completed)
+            return Task.objects.annotate(search=SearchVector("name", "description")).filter(user=self.request.user, search=query)
         return Task.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_form'] = TaskSearchForm(self.request.GET)
+        return context
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):

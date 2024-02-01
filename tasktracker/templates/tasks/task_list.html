@@ -3,6 +3,7 @@
 {% block content %}
 <h2>My tasks:</h2>
 
+<!-- Tabs -->
 <ul class="nav nav-tabs">
     <li class="nav-item">
         <a class="nav-link active" aria-current="page" href="#">View tasks</a>
@@ -15,7 +16,22 @@
 <!--    </li>-->
 </ul>
 
-<p>&nbsp;</p>
+<div>&nbsp;</div>
+
+<!-- Search block -->
+<div class="container">
+    <div class="row">
+        <div class="col-6 col-sm-6">
+            <form method="GET" action="{% url 'task_list' %}">
+                {{ search_form }}
+                <button  class="btn btn-outline-primary" type="submit">Search</button>
+                <a href="{% url 'task_list' %}" class="btn btn-outline-danger">Clear</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div>&nbsp;</div>
 
 {% if tasks %}
 <ul class="list-group" style="width:50%">
@@ -43,6 +59,6 @@
     {% endfor %}
 </ul>
 {% else %}
-<h4>You have no tasks yet. <a href="/tasks/create" class="btn btn-primary">Create one</a></h4>
+<h4>No tasks found</h4>
 {% endif %}
 {% endblock content %}
