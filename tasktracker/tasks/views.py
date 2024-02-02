@@ -4,9 +4,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
+from rest_framework.viewsets import ModelViewSet
+
 from .models import Task
 from .forms import TaskForm, TaskSearchForm
 from django.contrib.postgres.search import SearchVector
+
+from .serializers import TaskSerializer
 
 
 class TaskDetail(LoginRequiredMixin, DetailView):
@@ -85,3 +89,8 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
     def get_queryset(self):
         base_qs = super(TaskDeleteView, self).get_queryset()
         return base_qs.filter(user=self.request.user)
+
+
+class TasksRestView(ModelViewSet):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
