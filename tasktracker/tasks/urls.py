@@ -1,7 +1,7 @@
 # urls.py
 
 from django.urls import path
-from .views import TasksListView, TaskCreateView, TaskUpdateView, TaskDeleteView, TaskDetail, TasksRestView
+from .views import TasksListView, TaskCreateView, TaskUpdateView, TaskDeleteView, TaskDetail, TasksViewSet
 from rest_framework.routers import SimpleRouter
 
 urlpatterns = [
@@ -13,5 +13,6 @@ urlpatterns = [
 ]
 
 router = SimpleRouter()
-router.register('api/tasks', TasksRestView)
+router.register('api/v1/tasks', TasksViewSet, basename='tasks')
+
 urlpatterns += router.urls

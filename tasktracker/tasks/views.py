@@ -4,12 +4,17 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from .models import Task
 from .forms import TaskForm, TaskSearchForm
 from django.contrib.postgres.search import SearchVector
 
+from .permissions import IsOwnerOrReadOnly
 from .serializers import TaskSerializer
 
 
@@ -91,6 +96,24 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
         return base_qs.filter(user=self.request.user)
 
 
-class TasksRestView(ModelViewSet):
-    queryset = Task.objects.all()
+class TasksViewSet(viewsets.ModelViewSet):
+    # queryset = Task.objects.all()
     serializer_class = TaskSerializer
+    permission_classes = (IsOwnerOrReadOnly, ) # (IsAuthenticatedOrReadOnly, ) # IsAdminOnly
+
+    def get_queryset(self):
+        pk = self.kwargs.get("pk")
+        if not pk:
+            return Task.objects.filter(user=self.request.user)
+
+        return Task.objects.filter(pk=pk)
+
+    @action(methods=['get'], detail=False)
+    # categoreis
+    def completed(self, request):
+        completed_choices = (
+            ("", "All tasks"),
+            ("0", "Pending"),
+            ("1", "Completed"),
+        )
+        return Response({'cats': completed_choices})
